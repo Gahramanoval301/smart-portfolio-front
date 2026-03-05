@@ -47,7 +47,6 @@ export const courseOptions: string[] = [
     "קטן -הגשה סופית סמסטר א׳",
     "גדול שנה א",
     "רישום",
-    ":",
     "גדול-סמסטר א׳-שנה א׳",
     "-’א סמסטר",
     "גדול- ’סמסטר א",
@@ -68,7 +67,7 @@ export const advisorOptions: string[] = [
     "Avichai Tadmor",
     "Gal Gaon",
     "Tamar Lev On",
-    "I Big Studio I Semester 1",
+    // "I Big Studio I Semester 1",
     "Yoram Nidam",
     "Turgeman Weinstein Talia",
     "Levi Efrat",
@@ -78,15 +77,14 @@ export const advisorOptions: string[] = [
     "Mayan Eliman",
     "Efrat Levy",
     "Talia Turgeman Weinstein",
-    "losing track of time",
-    "blueprints",
+    // "losing track of time",
+    // "blueprints",
     "Sharon Ella",
     "Nidam Yoram",
     "Tadmor Avichai",
     "Michal Cohen",
-    "Gal Gaon Tamar Lev On",
     "Elbez Asher",
-    "A built-in mid-submission mark",
+    // "A built-in mid-submission mark",
     "Taliosef Orli",
     "Gaon Gal",
     "interpreter Weinstein Talia"
@@ -295,12 +293,13 @@ const SearchSection = () => {
                         onChange={handleChange}
                     >
                         <option value="">Select type</option>
-                        <option value="Drawing / Plan">Drawing / Plan</option>
-                        <option value="Computer Imaging (Render)">
+                        <option value="Plan">Drawing / Plan</option>
+                        <option value="Render">
                             Computer Imaging (Render)
                         </option>
-                        <option value="Physical model">Physical model</option>
-                        <option value="Photo / Other">Photo / Other</option>
+                        <option value="Model">Physical model</option>
+                        <option value="Photo">Photo / Other</option>
+                        <option value="Sketch">Sketch</option>
                     </select>
                 </div>
 
