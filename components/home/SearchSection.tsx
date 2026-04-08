@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../../src/assets/styles/searchSection.css"
 import { fetchStudentData, flattenPdfImages, StudentQueryParams } from "../../src/api";
+import Select from "react-select";
 
 export const courseOptions: string[] = [
+    "All",
     "גדול'סמסטר א-",
     "גדול | סימן בטבע",
     "גדול",
@@ -60,6 +62,7 @@ export const courseOptions: string[] = [
 ];
 
 export const advisorOptions: string[] = [
+    "All",
     "Ilan Garibi",
     "Yaron Eliasi",
     "Asher Elbaz",
@@ -90,6 +93,15 @@ export const advisorOptions: string[] = [
     "interpreter Weinstein Talia"
 ];
 
+const imageTypeOptions = [
+    { value: "all", label: "All" },
+    { value: "Plan", label: "Drawing / Plan" },
+    { value: "Render", label: "Computer Imaging (Render)" },
+    { value: "Model", label: "Physical model" },
+    { value: "Photo", label: "Photo / Other" },
+    { value: "Sketch", label: "Sketch" },
+];
+
 const SearchSection = () => {
 
     const [results, setResults] = useState(null);
@@ -102,6 +114,15 @@ const SearchSection = () => {
         studentId: "",
         imageType: "",
     });
+    const advisorSelectOptions = advisorOptions.map((advisor) => ({
+        value: advisor,
+        label: advisor,
+    }));
+
+    const courseSelectOptions = courseOptions.map((course) => ({
+        value: course,
+        label: course,
+    }));
     const [errors, setErrors] = useState({
         studentId: "",
     });
@@ -142,10 +163,10 @@ const SearchSection = () => {
 
             const query: StudentQueryParams = {
                 StudentId: filters.studentId,
-                AdvisorName: filters.advisor,
-                CourseName: filters.course,
+                AdvisorName: filters.advisor === "All" ? "" : filters.advisor,
+                CourseName: filters.course === "All" ? "" : filters.course,
                 AcademicYear: filters.startYear,
-                VisualType: filters.imageType
+                VisualType: filters.imageType === "all" ? "" : filters.imageType
             };
 
 
@@ -173,38 +194,40 @@ const SearchSection = () => {
                 {/* Advisor */}
                 <div className="form-group">
                     <label>Advisor Name</label>
-                    <select
-                        name="advisor"
-                        value={filters.advisor}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select advisor</option>
-
-                        {advisorOptions.map((advisor, index) => (
-                            <option key={`${advisor}-${index}`} value={advisor}>
-                                {advisor}
-                            </option>
-                        ))}
-
-                    </select>
+                    <Select
+                        options={advisorSelectOptions}
+                        value={advisorSelectOptions.find(
+                            (o) => o.value === filters.advisor
+                        )}
+                        onChange={(selected) =>
+                            setFilters((prev) => ({
+                                ...prev,
+                                advisor: selected?.value || "",
+                            }))
+                        }
+                        placeholder="Select advisor..."
+                        isSearchable
+                        isClearable
+                    />
                 </div>
                 {/* Course */}
                 <div className="form-group">
                     <label>Course Name</label>
-                    <select
-                        name="course"
-                        value={filters.course}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select course</option>
-
-                        {courseOptions.map((course) => (
-                            <option key={course} value={course}>
-                                {course}
-                            </option>
-                        ))}
-
-                    </select>
+                    <Select
+                        options={courseSelectOptions}
+                        value={courseSelectOptions.find(
+                            (o) => o.value === filters.course
+                        )}
+                        onChange={(selected) =>
+                            setFilters((prev) => ({
+                                ...prev,
+                                course: selected?.value || "",
+                            }))
+                        }
+                        placeholder="Select course..."
+                        isSearchable
+                        isClearable
+                    />
                 </div>
                 {/* Years */}
                 {/* <div className="form-group">
@@ -287,20 +310,20 @@ const SearchSection = () => {
                 {/* Image Type */}
                 <div className="form-group">
                     <label>Image Type</label>
-                    <select
-                        name="imageType"
-                        value={filters.imageType}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select type</option>
-                        <option value="Plan">Drawing / Plan</option>
-                        <option value="Render">
-                            Computer Imaging (Render)
-                        </option>
-                        <option value="Model">Physical model</option>
-                        <option value="Photo">Photo / Other</option>
-                        <option value="Sketch">Sketch</option>
-                    </select>
+                    <Select
+                        options={imageTypeOptions}
+                        value={imageTypeOptions.find(
+                            (o) => o.value === filters.imageType
+                        )}
+                        onChange={(selected) =>
+                            setFilters((prev) => ({
+                                ...prev,
+                                imageType: selected?.value || "",
+                            }))
+                        }
+                        placeholder="Select type"
+                        isClearable
+                    />
                 </div>
 
                 <button className="search-btn" onClick={handleSearch}>
